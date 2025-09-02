@@ -1,28 +1,28 @@
+# app/main.py
 from fastapi import FastAPI, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-from database import SessionLocal, engine, Base
-import crud
-import schemas
+from sqlalchemy.orm import Session
+from . import models, schemas, crud
+from .database import engine, SessionLocal, Base
+
+# Создаём таблицы
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# Создаем таблицы (для теста, потом будет alembic)
-@app.on_event("startup")
-async def startup():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-
-async def get_db():
-    async with SessionLocal() as session:
-        yield session
-
-@app.get("/tasks", response_model=list[schemas.TaskResponse])
-async def read_tasks(db: AsyncSession = Depends(get_db)):
-    return await crud.get_tasks(db)
-
-@app.post("/tasks", response_model=schemas.TaskResponse)
-async def create_task(task: schemas.TaskCreate, db: AsyncSession = Depends(get_db)):
-    return await crud.create_task(db, task)
+# Зависимость для подключения к БД
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
-# source .venv/bin/activate
+@app.get("/todos", response_model=list[schemas.ToDoRead])
+def read_todos(db: Session = Depends(get_db)):
+    return crud.get_todos(db)
+
+
+@app.post("/todos", response_model=schemas.ToDoRead)
+def create_todo(todo: schemas.ToDoCreate, db: Session = Depends(get_db)):
+    return crud.create_todo(db, todo)

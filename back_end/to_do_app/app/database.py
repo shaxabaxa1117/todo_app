@@ -5,9 +5,10 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 # Данные подключения к PostgreSQL
 DB_HOST = "localhost"
 DB_PORT = 5432
-DB_NAME = "todo_db"
+DB_NAME = "to_do_db"
 DB_USER = "postgres"
-DB_PASS = "password"
+DB_PASS = "postgres"
+
 
 DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
