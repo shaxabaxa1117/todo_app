@@ -18,7 +18,7 @@ def get_db():
         db.close()
 
 
-@app.get("/todos", response_model=list[schemas.ToDoRead])
+@app.get("/todos", response_model=list[schemas.ToDoRead],)
 def read_todos(db: Session = Depends(get_db)):
     return crud.get_todos(db)
 
@@ -26,3 +26,7 @@ def read_todos(db: Session = Depends(get_db)):
 @app.post("/todos", response_model=schemas.ToDoRead)
 def create_todo(todo: schemas.ToDoCreate, db: Session = Depends(get_db)):
     return crud.create_todo(db, todo)
+
+@app.delete("/todos/{todo_id}")
+def delete_todos(todo_id:int, db : Session = Depends(get_db)):
+    return crud.delete_todo(db = db,todo_id = todo_id )

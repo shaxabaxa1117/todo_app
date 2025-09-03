@@ -1,11 +1,15 @@
 
 class TaskEnity {
-  final String titel;
+  final int id;
+  final String title;
   final String description;
+  final bool isCompleted;
   
   TaskEnity({
-    required this.titel,
+    required this.id,
+    required this.title,
     required this.description,
+    required this.isCompleted
   });
 
   
