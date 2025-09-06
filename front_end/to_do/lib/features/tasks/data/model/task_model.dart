@@ -3,7 +3,7 @@
 import 'package:to_do/features/tasks/domain/enity/task_enity.dart';
 
 class TaskModel extends TaskEnity{
-  TaskModel({required super.title, required super.description, required super.id, required super.isCompleted});
+  TaskModel({required super.title, required super.description, required super.id,  required super.isCompleted});
 
 
 

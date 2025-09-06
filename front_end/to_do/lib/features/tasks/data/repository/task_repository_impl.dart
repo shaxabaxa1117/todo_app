@@ -1,6 +1,7 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:to_do/core/error/failure.dart';
+import 'package:to_do/features/tasks/data/DTO/createTaskDTO.dart';
 import 'package:to_do/features/tasks/data/data_source/remote_task_data_api.dart';
 import 'package:to_do/features/tasks/data/model/task_model.dart';
 import 'package:to_do/features/tasks/domain/enity/task_enity.dart';
@@ -38,11 +39,11 @@ class TaskRepositoryImpl implements TaskRepository{
   }
 
   @override
-  Future<Either<Failure, void>> postTask(TaskEnity task) async{
+  Future<Either<Failure, void>> postTask(CreateTaskDTO task) async{
 
 
     try{
-      final result = remoteTaskDataApi.postTasks(TaskModel.fromEnity(task));
+      final result = remoteTaskDataApi.postTasks(task);
       return Right(result);
     }on Failure catch(e){
       return Left(e);

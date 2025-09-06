@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do/features/tasks/presentation/cubit/task_cubit.dart';
+import 'package:to_do/features/tasks/presentation/pages/add_task_page.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -8,7 +9,25 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold( 
-      appBar:  AppBar(),
+      appBar:  AppBar(
+
+        actions: [
+          IconButton(
+  onPressed: () {
+    
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        // "Передаем" cubit на новый экран
+        builder: (context) => AddTaskPage(),
+    
+      ),
+    );
+  },
+  icon: const Icon(Icons.add),
+)
+        ],
+      ),
 body: BlocBuilder<TaskCubit,TaskState>(builder: (context, state) {
   if(state is TaskLoading){
     return Center(child: CircularProgressIndicator(),);

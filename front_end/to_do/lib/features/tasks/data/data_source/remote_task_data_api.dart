@@ -3,15 +3,17 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:to_do/core/consts/app_consts.dart';
 import 'package:to_do/core/error/exceptions.dart';
 import 'package:to_do/core/log/app_logger.dart';
+import 'package:to_do/features/tasks/data/DTO/createTaskDTO.dart';
 import 'package:to_do/features/tasks/data/model/task_model.dart';
 
 
 abstract interface class RemoteTaskDataApi {
 
   Future<List<TaskModel>> getTasks();
-  Future<void> postTasks(TaskModel task);
+  Future<void> postTasks(CreateTaskDTO task);
   Future<void> deleteTask(int taskId);
 }
 
@@ -22,11 +24,11 @@ class RemoteTaskDataApiImpl implements RemoteTaskDataApi{
   RemoteTaskDataApiImpl({required this.dio});
 
 
-    @override    // TODO: implement postTasks
+    @override   
   Future<List<TaskModel>> getTasks() async{
     try{
 
-      final response = await dio.get('http://10.0.2.2:8000/todos');
+      final response = await dio.get(AppConsts.baseUrl);
 
       
 
@@ -63,10 +65,31 @@ class RemoteTaskDataApiImpl implements RemoteTaskDataApi{
 
 
   @override
-  Future<void> postTasks(TaskModel task) {
-    // TODO: implement postTasks
-    throw UnimplementedError();
+  Future<void> postTasks(CreateTaskDTO task) async{
+
+    try{
+      final response = await dio.post(AppConsts.baseUrl,data: {
+        "title": task.title,
+        "description": task.description,
+      });
+
+       if (response.statusCode == HttpStatus.ok) {
+        AppLogger.logger.d(
+          "Task added successfully",
+        );
+      }
+
+    }on DioException catch(e){
+      AppLogger.logger.e("❌ Unexpected error:", error: e);
+
+      throw ErrorHandler.handle(e);
+    
+
+
+    
+
   }
 
 }
 
+}

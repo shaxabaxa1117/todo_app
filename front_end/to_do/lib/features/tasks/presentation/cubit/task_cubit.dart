@@ -1,19 +1,24 @@
+
+
 import 'package:bloc/bloc.dart';
 
 import 'package:meta/meta.dart';
 import 'package:to_do/core/error/failure.dart';
 import 'package:to_do/core/usecase/no_params.dart';
+import 'package:to_do/features/tasks/data/DTO/createTaskDTO.dart';
 import 'package:to_do/features/tasks/domain/enity/task_enity.dart';
 import 'package:to_do/features/tasks/domain/usecases/get_tasks_usecase.dart';
+import 'package:to_do/features/tasks/domain/usecases/post_task_usecase.dart';
+
 
 part 'task_state.dart';
 
 class TaskCubit extends Cubit<TaskState> {
 final GetTasksUsecase getTasksUsecase;
+final PostTaskUsecase postTaskUsecase;
 
 
-
-  TaskCubit({required this.getTasksUsecase}) : super(TaskInitial());
+  TaskCubit( {required this.getTasksUsecase, required this.postTaskUsecase,  }) : super(TaskInitial());
 
 
     Future<void> fetchPosts() async {
@@ -25,4 +30,14 @@ final GetTasksUsecase getTasksUsecase;
 
 
   }
+
+
+  Future<void> addTask(CreateTaskDTO task) async {
+    emit(TaskLoading());
+
+      final result = await postTaskUsecase(task);
+
+      result.fold((failure) => emit(TaskError(failure)), (success)=> fetchPosts() );
+
+}
 }

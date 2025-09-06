@@ -6,7 +6,7 @@ import 'package:to_do/injection_container.dart' as di;
 
 void main() async{
   runApp(const MyApp());
-  await di.initializeDependecies();
+  await di.initializeDependencies();
 }
 
 
@@ -15,13 +15,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => di.sl.get<TaskCubit>()..fetchPosts(),
+        ),
 
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+      
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        ),
+        home: MainApp()
       ),
-      home: MainApp()
     );
   }
 }
@@ -31,15 +39,8 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => di.sl.get<TaskCubit>()..fetchPosts(),
-        ),
-
-      ],
-      child: Home(),
-    );
+    return   Home();
+    
   }
 }
 

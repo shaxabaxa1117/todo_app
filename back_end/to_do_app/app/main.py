@@ -23,7 +23,7 @@ def read_todos(db: Session = Depends(get_db)):
     return crud.get_todos(db)
 
 
-@app.post("/todos", response_model=schemas.ToDoRead)
+@app.post("/todos")
 def create_todo(todo: schemas.ToDoCreate, db: Session = Depends(get_db)):
     return crud.create_todo(db, todo)
 
