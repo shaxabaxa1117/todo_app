@@ -1,10 +1,10 @@
-class CreateTaskDTO{
+class CreateTaskParms{
 
   final String title;
   final String description;
 
 
-  CreateTaskDTO({required this.title, required this.description, });
+  CreateTaskParms({required this.title, required this.description, });
 
   Map<String, dynamic> toJson() {
     return {

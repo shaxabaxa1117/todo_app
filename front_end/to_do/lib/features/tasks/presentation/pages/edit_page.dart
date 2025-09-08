@@ -1,18 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:to_do/features/tasks/data/params/create_task_params.dart';
+import 'package:to_do/features/tasks/data/params/update_task_params.dart';
 import 'package:to_do/features/tasks/presentation/cubit/task_cubit.dart';
 
-class AddTaskPage extends StatefulWidget {
-  const AddTaskPage({super.key});
+class EditTaskPage extends StatefulWidget {
+  final String title;
+  final String description;
+  final int id;
+
+  const EditTaskPage({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.id,
+  });
 
   @override
-  State<AddTaskPage> createState() => _AddTaskPageState();
+  State<EditTaskPage> createState() => _EditTaskPageState();
 }
 
-class _AddTaskPageState extends State<AddTaskPage> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+class _EditTaskPageState extends State<EditTaskPage> {
+  late final TextEditingController _titleController;
+  late final TextEditingController _descriptionController;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.title);
+    _descriptionController = TextEditingController(text: widget.description);
+  }
 
   @override
   void dispose() {
@@ -28,7 +44,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
         title: const Text(
-          'Добавить задачу',
+          'Редактировать задачу',
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
@@ -94,8 +110,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     return;
                                   }
 
-                                  context.read<TaskCubit>().addTask(
-                                        CreateTaskParms(
+                                  context.read<TaskCubit>().updateTask(
+                                        UpdateTaskParams(
+                                          taskId: widget.id,
                                           title: _titleController.text.trim(),
                                           description:
                                               _descriptionController.text.trim(),
@@ -112,8 +129,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   ),
                                 )
                               : const Text(
-                                  'Добавить',
-                                  style: TextStyle(fontSize: 16, color: Colors.white),
+                                  'Сохранить',
+                                  style: TextStyle(fontSize: 16, color: Colors.white,),
                                 ),
                         ),
                       );

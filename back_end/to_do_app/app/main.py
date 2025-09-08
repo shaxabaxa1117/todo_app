@@ -29,4 +29,9 @@ def create_todo(todo: schemas.ToDoCreate, db: Session = Depends(get_db)):
 
 @app.delete("/todos/{todo_id}")
 def delete_todos(todo_id:int, db : Session = Depends(get_db)):
-    return crud.delete_todo(db = db,todo_id = todo_id )
+    return crud.delete_todo(db = db,todo_id = todo_id )\
+
+@app.patch("/todos/{todo_id}")
+def update_todos(todo_id : int, todo: schemas.ToDoUpdate,db : Session = Depends(get_db)):
+    return crud.update_todo(db,todo_id,todo)
+

@@ -1,19 +1,31 @@
 part of 'task_cubit.dart';
 
-@immutable
-sealed class TaskState {}
 
-final class TaskInitial extends TaskState {}
+sealed class TaskState extends Equatable {
+  const TaskState();
 
+  @override
+  List<Object?> get props => [];
+}
 
-class TaskLoading extends TaskState {} // загрузка
+class TaskInitial extends TaskState {}
+
+class TaskLoading extends TaskState {}
 
 class TaskLoaded extends TaskState {
-  final List<TaskEnity> tasks; 
-  TaskLoaded(this.tasks);
+  final List<TaskEnity> tasks;
+
+  const TaskLoaded(this.tasks);
+
+  @override
+  List<Object?> get props => [tasks];
 }
 
 class TaskError extends TaskState {
   final Failure failure;
-  TaskError(this.failure);
+
+  const TaskError(this.failure);
+
+  @override
+  List<Object?> get props => [failure];
 }
